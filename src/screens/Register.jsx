@@ -1,8 +1,31 @@
-import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native'
-import React from 'react'
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native'
+import React, { isValidElement, useState } from 'react'
 import form from '../styles/form'
+import axios from 'axios'
 
-const Register = ({navigation}) => {
+const RegisterScreen = ({navigation}) => {
+  const [formData, setFormData] = useState({id: '', name: '', email: ''})
+
+  const handleInput = (field, value) => {
+    setFormData({...formData, [field]: value})
+  }
+
+  const handleSubmit = async () => {
+    try {
+      const response = await axios.post('http://10.0.2.2:3000/users', 
+        {
+          id: 100,
+          name: 'suyogosogoagogs',
+          email: 'asjdhasjdhkajshd'
+        }
+      )
+      Alert.alert('Success', 'Data Submitted')
+      setFormData({id: '', name: '', email: ''})
+      console.log(response.data)
+    } catch (error) {
+      Alert.alert('Error', 'failed')
+    }
+  }
   return (
     <View style={form.formContainer}>
       <Text style={form.headingText}>Register</Text>
@@ -10,20 +33,23 @@ const Register = ({navigation}) => {
       <TextInput 
         placeholder='Full Name'
         style={form.inputField}    
+        onChangeText={(value) => handleInput('name', value)}
       />
 
       <TextInput 
         placeholder='Email'
         keyboardType='email-address'
         style={form.inputField}    
-      />
+        onChangeText={(value) => handleInput('email', value)}
+        />
       <TextInput 
         placeholder='Password'
         secureTextEntry
         style={form.inputField}
+        onChangeText={(value) => handleInput('id', value)}
       />
 
-      <TouchableOpacity style={form.btnStyle}>
+      <TouchableOpacity style={form.btnStyle} onPress={handleSubmit}>
         <Text style={form.btnText}>Register</Text>
       </TouchableOpacity>
 
@@ -32,4 +58,4 @@ const Register = ({navigation}) => {
   )
 }
 
-export default Register
+export default RegisterScreen

@@ -4,9 +4,9 @@ const form = StyleSheet.create({
     formContainer: {
         padding: 20,
         backgroundColor: 'white',
-        margin: 20,
         borderRadius: 8,
-        boxShadow: '1px 1px 10px rgba(0,0,0,0.1)'
+        boxShadow: '1px 1px 10px rgba(0,0,0,0.1)',
+        width: '90%'
     },
     headingText: {
         textAlign: 'center',

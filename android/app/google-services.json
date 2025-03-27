@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "758240411249",
+    "project_id": "rnfirebase-1968a",
+    "storage_bucket": "rnfirebase-1968a.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:758240411249:android:0ac4f1b67132809eca65d0",
+        "android_client_info": {
+          "package_name": "com.reactnavigationpractice"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDrIxoh5rsa0TPAL0w0isUuJHcuLK1FdmI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
