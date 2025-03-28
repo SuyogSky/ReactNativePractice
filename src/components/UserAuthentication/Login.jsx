@@ -1,9 +1,9 @@
-import { View, Text, Alert, TextInput, Button, TouchableOpacity } from 'react-native'
-import React, { useEffect, useState } from 'react'
-import { loginUser } from '../../auth'
-import { getAuth } from '@react-native-firebase/auth'
+import { View, Text, Alert, TextInput, TouchableOpacity } from 'react-native'
+import React, { useContext, useState } from 'react'
+import AuthContext from '../../context/AuthContext'
 
 const Login = ({navigation}) => {
+    const {loginUser} = useContext(AuthContext)
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
 
@@ -12,7 +12,7 @@ const Login = ({navigation}) => {
             const { user, isEmailVerified } = await loginUser(email, password)
             if (isEmailVerified) {
                 Alert.alert('Success', 'Login Successful')
-                navigation.navigate('Home')
+                navigation.replace('Home')
             }
             else {
                 Alert.alert('Warning', 'Email is not verified.')

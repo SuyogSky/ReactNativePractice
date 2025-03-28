@@ -1,60 +1,74 @@
 import { createContext, useState } from "react";
-import { Alert } from "react-native";
+import auth from '@react-native-firebase/auth'
+import { Alert } from 'react-native'
 
 const AuthContext = createContext()
 
 export default AuthContext
 
-export const AuthProvider = ( {children} ) => {
-    const userEmail = 'suyog@gmail.com'
-    const userPassword = '1234'
+export const AuthProvider = ({ children }) => {
 
-    const [userList, setUserList] = useState([
-        {
-            name: 'user1',
-            email: 'user1@gmail.com',
-            password: '1234'
-        },
-        {
-            name: 'user2',
-            email: 'user2@gmail.com',
-            password: '1234'
-        }
-    ])
+    const [loggedInUser, setLoggedInUser] = useState()
 
-    const [user, setUser] = useState(null)
-
-    const loginUser = (email, password) => {
-        if (email == '' || password == ''){
-            Alert.alert('Login', 'Please enter all the fields.')
+    const registerUser = async (email, password) => {
+        try {
+            const userDetails = await auth().createUserWithEmailAndPassword(email, password)
+            await userDetails.user.sendEmailVerification()
+            return userDetails
+        } catch (error) {
+            console.log(error.code)
+            throw new Error(error.code)
         }
-        else if (email == userEmail && password == userPassword){
-            setUser({name: 'Suyog Shakya', email: userEmail})
-            Alert.alert('Login', 'Login successful.')
-            return true
-        }
-        else{
-            Alert.alert('Login', 'Please enter valid credentials.')
-        }
-        return false
     }
 
-    const registerUser = (name, email, password) => {
-        if (email == '' || password == '' || name == ''){
-            Alert.alert('Register', 'Please enter all the fields.')
+    const loginUser = async (email, password) => {
+        try {
+            const userDetails = await auth().signInWithEmailAndPassword(email, password)
+            const user = userDetails.user;
+            return { user, isEmailVerified: user.emailVerified }
+        } catch (error) {
+            console.log(error.code)
+            throw new Error(error.code)
         }
-        else{
-            setUser([...{name, email, password}])
+    }
+
+    const resetPassword = async (email) => {
+        try {
+            await auth().sendPasswordResetEmail(email)
+        } catch (error) {
+            throw new Error(error.code)
+        }
+    }
+
+    const checkLogin = async () => {
+        try {
+            await auth().onAuthStateChanged((user) => {
+                setLoggedInUser(user)
+            })
+        } catch (error) {
+            throw new Error(error)
+        }
+    }
+
+    const logoutUser = async () => {
+        try {
+            await auth().signOut()
+            Alert.alert('Success', 'You have been logged out.')
+        } catch (error) {
+            throw new Error(error)
         }
     }
 
     const contextDate = {
-        user,
+        loggedInUser,
+        registerUser,
         loginUser,
-        registerUser
+        resetPassword,
+        checkLogin,
+        logoutUser
     }
     return (
-        <AuthContext.Provider value={ contextDate }>
+        <AuthContext.Provider value={contextDate}>
             {children}
         </AuthContext.Provider>
     )

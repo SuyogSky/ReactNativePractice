@@ -1,22 +1,43 @@
-import { View, Text, ScrollView, StyleSheet } from 'react-native'
-import React from 'react'
-import GetRequest from './src/components/GetRequest'
-import PostRequest from './src/components/PostRequest'
-import PutRequest from './src/components/PutRequest'
-import PatchRequest from './src/components/PatchRequest'
-import Test from './src/components/Test'
-import AsyncStoragePractice from './src/components/AsyncStoragePractice'
+import React, { useContext, useEffect, useState } from 'react'
 import Login from './src/components/UserAuthentication/Login'
 import Register from './src/components/UserAuthentication/Register'
-import RegisterScreen from './src/screens/Register'
 import ForgotPassword from './src/components/UserAuthentication/ForgotPassword'
-import {NavigationContainer} from '@react-navigation/native'
+import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack';
 import Home from './src/components/Home'
+import { getAuth } from '@react-native-firebase/auth'
+import DetailsPage from './src/components/DetailsPage'
+import { AuthProvider } from './src/context/AuthContext'
 
-const AuthStack = createStackNavigator();
+const Stack = createStackNavigator();
+
+const AuthStack = () => {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen name='Login' component={Login} options={{ headerShown: false }} />
+      <Stack.Screen name='Register' component={Register} options={{ headerShown: false }} />
+      <Stack.Screen name='ForgotPassword' component={ForgotPassword} options={{ headerShown: false }} />
+    </Stack.Navigator>
+  )
+}
+
+const PrivateStack = () => {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen name='Home' component={Home} />
+      <Stack.Screen name='Details' component={DetailsPage} />
+    </Stack.Navigator>
+  )
+}
 
 const App = () => {
+  const [isLoggedIn, setIsLoggedIn] = useState()
+  useEffect(() => {
+    getAuth().onAuthStateChanged((user) => {
+      setIsLoggedIn(user)
+    })
+  }, [])
+
   return (
     // <ScrollView>
     //   <GetRequest />
@@ -29,41 +50,14 @@ const App = () => {
     // <Login />
     // <ForgotPassword />
 
-    <NavigationContainer>
-      <AuthStack.Navigator>
-        <AuthStack.Screen name='Login' component={Login} options={{headerShown: false}} />
-        <AuthStack.Screen name='Register' component={Register}  options={{headerShown: false}}  />
-        <AuthStack.Screen name='ForgotPassword' component={ForgotPassword}  options={{headerShown: false}} />
-        <AuthStack.Screen name='Home' component={Home} />
-      </AuthStack.Navigator>
-    </NavigationContainer>
-    
+    <AuthProvider>
+      <NavigationContainer>
+        {isLoggedIn ? <PrivateStack /> : <AuthStack />}
+      </NavigationContainer>
+    </AuthProvider>
+
+
   )
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  smallCircle: {
-    position: 'absolute',
-    top: -150,
-    left: -60,
-    width: 250,
-    height: 250,
-    borderRadius: '50%',
-    backgroundColor: '#8c2de2',
-  },
-  largeCircle: {
-    position: 'absolute',
-    top: -150,
-    right: -80,
-    width: 300,
-    height: 300,
-    borderRadius: '50%',
-    backgroundColor: '#6c2de2',
-  }
-})
 export default App

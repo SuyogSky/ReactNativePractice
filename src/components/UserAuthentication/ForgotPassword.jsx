@@ -1,8 +1,10 @@
 import { View, Text, TextInput, TouchableOpacity, Alert } from 'react-native'
-import React, { useState } from 'react'
-import { resetPassword } from '../../auth'
+import React, { useContext, useState } from 'react'
+import AuthContext from '../../context/AuthContext'
 
 const ForgotPassword = ({navigation}) => {
+    const {resetPassword} = useContext(AuthContext)
+
     const [email, setEmail] = useState('')
 
     const handleSubmit = async () => {

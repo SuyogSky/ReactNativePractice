@@ -1,8 +1,10 @@
 import { View, Text, TextInput, Button, Alert, TouchableOpacity } from 'react-native'
-import React, { useState } from 'react'
-import { registerUser } from '../../auth'
+import React, { useContext, useState } from 'react'
+import AuthContext from '../../context/AuthContext'
 
 const Register = ({navigation}) => {
+    const {registerUser} = useContext(AuthContext)
+
     const [userName, setUserName] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
