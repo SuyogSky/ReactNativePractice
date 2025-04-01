@@ -9,6 +9,8 @@ import { getAuth } from '@react-native-firebase/auth'
 import DetailsPage from './src/components/DetailsPage'
 import { AuthProvider } from './src/context/AuthContext'
 import UserCrud from './src/components/UserCrud/UserCrud'
+import Test from './src/components/Test'
+import ImageUpload from './src/components/UserCrud/ImageUpload'
 
 const Stack = createStackNavigator();
 
@@ -56,7 +58,8 @@ const App = () => {
     //     {isLoggedIn ? <PrivateStack /> : <AuthStack />}
     //   </NavigationContainer>
     // </AuthProvider>
-    <UserCrud />
+    // <UserCrud />
+    <ImageUpload />
   )
 }
 
