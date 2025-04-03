@@ -11,6 +11,8 @@ import { AuthProvider } from './src/context/AuthContext'
 import UserCrud from './src/components/UserCrud/UserCrud'
 import Test from './src/components/Test'
 import ImageUpload from './src/components/UserCrud/ImageUpload'
+import ImagePickerExample from './src/components/Test'
+import Camera from './src/components/Camera'
 
 const Stack = createStackNavigator();
 
@@ -59,7 +61,8 @@ const App = () => {
     //   </NavigationContainer>
     // </AuthProvider>
     // <UserCrud />
-    <ImageUpload />
+    // <ImageUpload />
+    <Camera />
   )
 }
 
